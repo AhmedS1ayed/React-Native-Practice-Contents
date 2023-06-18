@@ -27,7 +27,6 @@ const GoalList = (props) => {
 
 const styles = StyleSheet.create({
   list: {
-    backgroundColor: "#eee",
     padding: 20,
     borderRadius: 10,
     marginVertical: 8,

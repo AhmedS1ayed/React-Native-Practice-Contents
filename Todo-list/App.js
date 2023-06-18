@@ -1,9 +1,11 @@
 import { StatusBar } from "expo-status-bar";
-import { Modal, StyleSheet, View } from "react-native";
+import { Dimensions, Image, StyleSheet, View } from "react-native";
 import useGoals from "./hooks/useGoals";
 import OutputContainer from "./components/OutputContainer";
 import InputContainer from "./components/InputContainer";
-
+import ButtonCustom from "./components/ButtonCustom";
+import { useState } from "react";
+import IconBackground from "./components/IconBackground";
 export default function App() {
   const [
     selectedItem,
@@ -13,6 +15,7 @@ export default function App() {
     listGoal,
     setListGoal,
   ] = useGoals();
+  const [inputContainerModal, setInputContainerModal] = useState(false);
 
   function goalInputHandler(enteredText) {
     setEnteredGoal(enteredText);
@@ -36,21 +39,36 @@ export default function App() {
     setListGoal(filteredItems);
     setSelectedItem(null);
   }
+  function inputModalHandler() {
+    inputContainerModal === true
+      ? setInputContainerModal(false)
+      : setInputContainerModal(true);
+  }
 
   return (
-    <View style={styles.appContainer}>
-      <InputContainer
-        goalInputHandler={goalInputHandler}
-        enteredGoal={enteredGoal}
-        addGoalHandler={addGoalHandler}
-      />
-      <OutputContainer
-        listGoal={listGoal}
-        selectedItem={selectedItem}
-        setSelectedItem={setSelectedItem}
-        deleteGoalHandler={deleteGoalHandler}
-      />
-      <StatusBar style="auto" />
+    <View style={{flex:1}}>
+      <IconBackground/>
+      <View style={styles.appContainer}>
+        <ButtonCustom
+          color="purple"
+          text="Add New Goal"
+          onPress={inputModalHandler}
+        />
+        <InputContainer
+          goalInputHandler={goalInputHandler}
+          enteredGoal={enteredGoal}
+          addGoalHandler={addGoalHandler}
+          visible={inputContainerModal}
+          setVisible={setInputContainerModal}
+        />
+        <OutputContainer
+          listGoal={listGoal}
+          selectedItem={selectedItem}
+          setSelectedItem={setSelectedItem}
+          deleteGoalHandler={deleteGoalHandler}
+        />
+        <StatusBar style="auto" />
+      </View>
     </View>
   );
 }
@@ -62,5 +80,5 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     flex: 1,
-  },
+  }
 });
